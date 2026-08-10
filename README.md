@@ -36,16 +36,11 @@ This repository uses the **App-of-Apps** pattern:
 
 ```mermaid
 graph TD
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;
-    classDef root fill:#d4edda,stroke:#28a745,stroke-width:2px;
-    classDef app fill:#cce5ff,stroke:#007bff,stroke-width:2px;
-    classDef target fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
-
-    RootApp["Root Application<br>(bootstrap/dev-root.yaml)"]:::root
+    RootApp["Root Application<br>(bootstrap/dev-root.yaml)"]
     AppsFolder["Apps Config Folder<br>(apps/dev/)"]
-    AppGuestbook["Guestbook Application<br>(apps/dev/guestbook.yaml)"]:::app
+    AppGuestbook["Guestbook Application<br>(apps/dev/guestbook.yaml)"]
     EnvFolder["Kustomize Target Overlay<br>(environments/dev/)"]
-    TargetCluster["AKS Dev Cluster<br>(Namespace: dev)"]:::target
+    TargetCluster["AKS Dev Cluster<br>(Namespace: dev)"]
 
     RootApp -->|Monitors & Deploys| AppsFolder
     AppsFolder -->|Declares| AppGuestbook
@@ -99,14 +94,10 @@ terraform/
 
 ```mermaid
 graph LR
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;
-    classDef cluster fill:#e2e3e5,stroke:#383d41,stroke-width:2px;
-    classDef acr fill:#cce5ff,stroke:#007bff,stroke-width:1px;
-    
     subgraph Azure Subscription
         subgraph RG [Resource Group: rg-argocd-gitops-env]
             VNet["Virtual Network<br>(Azure CNI Subnet)"]
-            ACR["Azure Container Registry (ACR)"]:::acr
+            ACR["Azure Container Registry (ACR)"]
             
             subgraph AKS [AKS Kubernetes Cluster]
                 direction TB
