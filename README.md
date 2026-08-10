@@ -14,18 +14,25 @@ argocd-gitops/
 │   │   └── guestbook.yaml
 │   └── prod/              # Prod applications (points to environments/prod)
 │       └── guestbook.yaml
-└── environments/          # Application manifests organized by environment
-    ├── base/              # Base Kubernetes manifests
-    │   ├── deployment.yaml
-    │   ├── service.yaml
-    │   └── kustomization.yaml
-    ├── dev/               # Dev overlay (patches and replicas)
-    │   ├── replica-patch.yaml
-    │   └── kustomization.yaml
-    └── prod/              # Prod overlay (patches and replicas)
-        ├── replica-patch.yaml
-        └── kustomization.yaml
+├── environments/          # Application manifests organized by environment
+│   ├── base/              # Base Kubernetes manifests
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   └── kustomization.yaml
+│   ├── dev/               # Dev overlay (patches and replicas)
+│   │   ├── replica-patch.yaml
+│   │   └── kustomization.yaml
+│   └── prod/              # Prod overlay (patches and replicas)
+│       ├── replica-patch.yaml
+│       └── kustomization.yaml
+└── terraform/             # Terraform infrastructure configurations
+    ├── clusters/          # Environment cluster configurations
+    │   ├── dev/           # Development AKS cluster environment
+    │   └── prod/          # Production AKS cluster environment
+    └── modules/
+        └── aks-gitops/    # Reusable core AKS and Argo CD module
 ```
+
 
 ## How It Works
 
@@ -200,4 +207,3 @@ Once Terraform apply completes, configure your local environment and retrieve yo
 This deployment defaults to **Azure CNI** (Container Network Interface) for native pod routing and performance.
 * **Current Choice (Azure CNI)**: Every pod receives a real IP address from the VNet subnet. This enables direct, low-latency pod-to-pod communication across virtual networks and simplifies integration with other Azure services.
 * **Future Consideration (Kubenet)**: Kubenet remains a future consideration to save IP address space. With Azure CNI, a cluster can quickly exhaust subnet IP space because each pod consumes a VNet IP. Kubenet uses IP address space inside the cluster node only and NATs traffic, meaning it only uses one host VNet IP per node. If VNet/Subnet IP address spaces become constrained, migrating to Kubenet networking is recommended.
-
