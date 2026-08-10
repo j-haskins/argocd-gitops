@@ -16,3 +16,19 @@ kubeconfig*
 # Local/private Helm overrides
 *local-values.yaml
 .helm/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*override.tf
+*override.tf.json
+.terraform.lock.hcl
+terraform.tfvars
+terraform.tfvars.json
+*.tfvars
+
