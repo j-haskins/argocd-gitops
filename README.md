@@ -123,6 +123,49 @@ graph LR
     AKS -->|Role: AcrPull| ACR
 ```
 
+### Configuration Details
+
+The core module `aks-gitops` accepts the following variables:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `environment` | The deployment environment (e.g., `dev`, `prod`) | *Required* |
+| `location` | The Azure region where resources will be created | `East US` |
+| `resource_group_name` | The name of the resource group | *Required* |
+| `cluster_name` | The name of the AKS cluster | *Required* |
+| `node_count` | The number of nodes in the system node pool | `1` |
+| `vm_size` | The VM size for the system node pool | `Standard_D2s_v3` |
+| `acr_name` | The name of the Azure Container Registry | *Required* |
+| `vnet_cidr` | The CIDR block for the Virtual Network | `10.0.0.0/8` |
+| `subnet_cidr` | The CIDR block for the AKS subnet | `10.240.0.0/16` |
+
+Each cluster environment workspace applies custom default parameters:
+
+* **Development Cluster (`clusters/dev`)**:
+  * Resource Group: `rg-argocd-gitops-dev`
+  * VNet Network: `10.10.0.0/16` (isolates dev network)
+  * AKS Subnet: `10.10.1.0/24`
+  * AKS Nodes: `1` node (`Standard_D2s_v3`)
+  * ACR Name: `acrargocdgitopsdev` (alphanumeric, globally unique)
+* **Production Cluster (`clusters/prod`)**:
+  * Resource Group: `rg-argocd-gitops-prod`
+  * VNet Network: `10.20.0.0/16` (isolates prod network)
+  * AKS Subnet: `10.20.1.0/24`
+  * AKS Nodes: `3` nodes (`Standard_D2s_v3` for high availability)
+  * ACR Name: `acrargocdgitopsprod` (alphanumeric, globally unique)
+
+### Terraform Outputs
+
+Each environment exposes the following outputs:
+
+* `resource_group_name`: The name of the Resource Group created.
+* `aks_cluster_name`: The name of the AKS cluster.
+* `acr_name`: The name of the Azure Container Registry.
+* `acr_login_server`: The login server URL for the ACR.
+* `connect_command`: Ready-to-run Azure CLI command to configure local `kubectl` for cluster connection.
+* `argocd_password_bash`: Command (Bash) to retrieve the initial Argo CD admin password.
+* `argocd_password_powershell`: Command (PowerShell) to retrieve the initial Argo CD admin password.
+
 ### Setup & Deployment
 
 1. **Prerequisites**: Ensure you have Terraform installed, are logged into Azure (`az login`), and have selected the appropriate subscription.
