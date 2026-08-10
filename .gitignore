@@ -1,0 +1,18 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Kubeconfig and local cluster configs
+*.kubeconfig
+kubeconfig*
+.kube/
+
+# Temporary and editor files
+*.swp
+*~
+.idea/
+.vscode/
+
+# Local/private Helm overrides
+*local-values.yaml
+.helm/
