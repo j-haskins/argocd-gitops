@@ -24,6 +24,7 @@ argocd-gitops/
 │   └── prod/              # Prod overlay
 │       └── kustomization.yaml
 └── terraform/             # Terraform infrastructure configurations
+    ├── bootstrap/         # Bootstraps the remote state storage (local state)
     ├── clusters/          # Environment cluster configurations
     │   ├── dev/           # Development AKS cluster environment
     │   └── prod/          # Production AKS cluster environment
