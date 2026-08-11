@@ -128,7 +128,7 @@ The core module `aks-gitops` accepts the following variables:
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `environment` | The deployment environment (e.g., `dev`, `prod`) | *Required* |
-| `location` | The Azure region where resources will be created | `East US` |
+| `location` | The Azure region where resources will be created | `Central US` |
 | `resource_group_name` | The name of the resource group | *Required* |
 | `cluster_name` | The name of the AKS cluster | *Required* |
 | `node_count` | The number of nodes in the system node pool | `1` |
