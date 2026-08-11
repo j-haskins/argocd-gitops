@@ -137,6 +137,9 @@ The core module `aks-gitops` accepts the following variables:
 | `vnet_cidr` | The CIDR block for the Virtual Network | `10.0.0.0/8` |
 | `subnet_cidr` | The CIDR block for the AKS subnet | `10.240.0.0/16` |
 
+> [!NOTE]
+> The default Azure region is configured as `Central US` (central) to avoid regional vCPU quota limitations often encountered in `East US`.
+
 Each cluster environment workspace applies custom default parameters:
 
 * **Development Cluster (`clusters/dev`)**:
@@ -193,6 +196,16 @@ Each environment exposes the following outputs:
 > ```bash
 > terraform apply -target=module.aks_gitops
 > terraform apply
+> ```
+
+> [!IMPORTANT]
+> **Role Assignment Permissions**: The identity running the Terraform pipeline to deploy `aks-gitops` (module) will require the ability to perform the following action: `Microsoft.Authorization/roleAssignments/write` for:
+> ```hcl
+> resource "azurerm_role_assignment" "acr_pull" {
+>   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+>   role_definition_name = "AcrPull"
+>   scope                = azurerm_container_registry.acr.id
+> }
 > ```
 
 ### Connection & ArgoCD Access
