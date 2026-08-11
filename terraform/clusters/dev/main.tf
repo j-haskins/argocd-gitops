@@ -1,5 +1,11 @@
 terraform {
   required_version = ">= 1.0.0"
+  backend "azurerm" {
+    resource_group_name  = "rg-argocd-gitops-tfstate"
+    storage_account_name = "sargocdgitopstfstate"
+    container_name       = "tfstate"
+    key                  = "dev/terraform.tfstate"
+  }
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"

@@ -19,11 +19,9 @@ argocd-gitops/
 │   │   ├── deployment.yaml
 │   │   ├── service.yaml
 │   │   └── kustomization.yaml
-│   ├── dev/               # Dev overlay (patches and replicas)
-│   │   ├── replica-patch.yaml
+│   ├── dev/               # Dev overlay
 │   │   └── kustomization.yaml
-│   └── prod/              # Prod overlay (patches and replicas)
-│       ├── replica-patch.yaml
+│   └── prod/              # Prod overlay
 │       └── kustomization.yaml
 └── terraform/             # Terraform infrastructure configurations
     ├── clusters/          # Environment cluster configurations
@@ -207,3 +205,8 @@ Once Terraform apply completes, configure your local environment and retrieve yo
 This deployment defaults to **Azure CNI** (Container Network Interface) for native pod routing and performance.
 * **Current Choice (Azure CNI)**: Every pod receives a real IP address from the VNet subnet. This enables direct, low-latency pod-to-pod communication across virtual networks and simplifies integration with other Azure services.
 * **Future Consideration (Kubenet)**: Kubenet remains a future consideration to save IP address space. With Azure CNI, a cluster can quickly exhaust subnet IP space because each pod consumes a VNet IP. Kubenet uses IP address space inside the cluster node only and NATs traffic, meaning it only uses one host VNet IP per node. If VNet/Subnet IP address spaces become constrained, migrating to Kubenet networking is recommended.
+
+### Argo CD Access: Public LoadBalancer vs. Secure Ingress Controller
+This deployment defaults to exposing the Argo CD API/UI server via a Kubernetes `LoadBalancer` service for simplicity.
+* **Current Choice (LoadBalancer Service)**: Argo CD is exposed directly with a public IP address allocated by Azure. This is useful for rapid prototyping and initial setup.
+* **Future Consideration (Secure Ingress with TLS)**: Exposing the control plane directly over a public `LoadBalancer` without SSL/TLS certificates or custom DNS names is insecure for production. Future considerations include switching `server.service.type` to `ClusterIP` and using an **Ingress Controller** (e.g., NGINX Ingress Controller) paired with **cert-manager** to automatically manage Let's Encrypt certificates and expose the service securely.
