@@ -87,10 +87,11 @@ ArgoCD will automatically create the prod `guestbook` application and sync the r
 
 ## Infrastructure Provisioning (Terraform)
 
-The infrastructure for the AKS clusters is defined using Terraform. It is organized into a reusable module and cluster-specific directories to maintain separate state and configurations:
+The infrastructure for the AKS clusters is defined using Terraform. It is organized into a bootstrap workspace, a reusable module, and cluster-specific directories to maintain separate state and configurations:
 
 ```text
 terraform/
+├── bootstrap/               # Bootstraps the Azure RG & Storage Account for state backend
 ├── modules/
 │   └── aks-gitops/          # Reusable module for RG, VNet, Subnet, AKS, ACR, and ArgoCD
 └── clusters/
@@ -166,13 +167,21 @@ Each environment exposes the following outputs:
 ### Setup & Deployment
 
 1. **Prerequisites**: Ensure you have Terraform installed, are logged into Azure (`az login`), and have selected the appropriate subscription.
-2. **Initialize & Deploy (Dev)**:
+2. **Bootstrap Remote State Storage (Optional)**:
+   If you want to configure and use Azure Storage for remote state backend management, provision the storage container and resource group first:
+   ```bash
+   cd terraform/bootstrap
+   terraform init
+   terraform apply
+   ```
+   *(See the [bootstrap README](file:///C:/Users/jhask/OneDrive/Documents/MyRepos/argocd-gitops/terraform/bootstrap/README.md) for instructions on importing existing storage resources into the state if they were already created via CLI).*
+3. **Initialize & Deploy (Dev)**:
    ```bash
    cd terraform/clusters/dev
    terraform init
    terraform apply
    ```
-3. **Initialize & Deploy (Prod)**:
+4. **Initialize & Deploy (Prod)**:
    ```bash
    cd terraform/clusters/prod
    terraform init
