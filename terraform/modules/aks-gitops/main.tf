@@ -53,6 +53,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vnet_subnet_id = azurerm_subnet.subnet.id
     os_disk_size_gb = 30
     max_pods       = var.max_pods
+    temporary_name_for_rotation = "systemtemp"
   }
 
   identity {
