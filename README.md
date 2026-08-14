@@ -191,22 +191,23 @@ Each environment exposes the following outputs:
    terraform apply
    ```
 
-> [!TIP]
-> **Dynamic Providers Note**: Terraform configures the Helm/Kubernetes providers using the outputs of the AKS cluster. If applying for the first time on a clean environment, you should target the AKS infrastructure module first, then run a full apply to deploy Argo CD:
-> ```bash
-> terraform apply -target=module.aks_gitops
-> terraform apply
-> ```
-
 > [!IMPORTANT]
-> **Role Assignment Permissions**: The identity running the Terraform pipeline to deploy `aks-gitops` (module) will require the ability to perform the following action: `Microsoft.Authorization/roleAssignments/write` for:
-> ```hcl
-> resource "azurerm_role_assignment" "acr_pull" {
->   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
->   role_definition_name = "AcrPull"
->   scope                = azurerm_container_registry.acr.id
-> }
-> ```
+> **First-Time Deployment & Permissions**:
+> 
+> 1. **Dynamic Providers & Target Apply**: Terraform configures the Helm/Kubernetes providers using the outputs of the AKS cluster. On a clean environment, you must target the AKS infrastructure module first to provision the base cluster and prevent unreachable endpoint errors during provider initialization:
+>    * **Command (Bash/zsh)**:
+>      ```bash
+>      terraform apply -target=module.aks_gitops
+>      terraform apply
+>      ```
+>    * **Command (PowerShell)**: PowerShell treats the dot (`.`) in the target path as a member-access operator. You must wrap the parameter in quotes to avoid syntax errors:
+>      ```powershell
+>      terraform apply -target="module.aks_gitops"
+>      terraform apply
+>      ```
+> 
+> 2. **Role Assignment Permissions**: The identity running the Terraform pipeline to deploy `aks-gitops` (module) will require the ability to perform the action `Microsoft.Authorization/roleAssignments/write` to assign the `AcrPull` role to the AKS cluster's Kubelet identity.
+
 
 ### Connection & ArgoCD Access
 
