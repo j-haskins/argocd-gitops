@@ -38,6 +38,7 @@ module "aks_gitops" {
   acr_name            = var.acr_name
   vnet_cidr           = var.vnet_cidr
   subnet_cidr         = var.subnet_cidr
+  max_pods            = var.max_pods
 }
 
 provider "kubernetes" {

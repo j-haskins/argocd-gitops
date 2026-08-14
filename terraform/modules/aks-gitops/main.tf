@@ -52,6 +52,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vm_size        = var.vm_size
     vnet_subnet_id = azurerm_subnet.subnet.id
     os_disk_size_gb = 30
+    max_pods       = var.max_pods
   }
 
   identity {

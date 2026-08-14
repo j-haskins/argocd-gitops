@@ -51,3 +51,10 @@ variable "subnet_cidr" {
   type        = string
   default     = "10.20.1.0/24"
 }
+
+variable "max_pods" {
+  description = "The maximum number of pods that can run on a node in the default system node pool"
+  type        = number
+  default     = 50
+}
+
