@@ -58,6 +58,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type = "SystemAssigned"
   }
 
+  oidc_issuer_enabled       = true
+
   network_profile {
     network_plugin    = "azure"
     load_balancer_sku = "standard"
