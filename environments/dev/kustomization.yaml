@@ -12,3 +12,9 @@ replicas:
 
 commonLabels:
   env: dev
+
+images:
+- name: gcr.io/heptio-images/ks-guestbook-demo
+  newName: acrargocdgitopsdev.azurecr.io/ks-guestbook-demo
+  newTag: "0.2"
+

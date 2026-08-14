@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../base
+
+namePrefix: dev-
+
+patches:
+- target:
+    kind: Application
+    name: guestbook
+  patch: |-
+    apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: guestbook
+    spec:
+      source:
+        repoURL: https://github.com/j-haskins/argocd-gitops.git
+        path: environments/dev
+      destination:
+        namespace: dev

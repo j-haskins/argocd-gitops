@@ -59,19 +59,19 @@ graph TD
 ## Bootstrapping ArgoCD
 
 ### 1. Dev Environment
-To deploy all development applications, apply the Dev Root Application to your cluster:
+To deploy all development applications, apply the Dev Root Application overlay to your cluster:
 
 ```bash
-kubectl apply -f bootstrap/dev-root.yaml
+kubectl apply -k bootstrap/dev
 ```
 
 ArgoCD will automatically create the dev `guestbook` application and sync the resources defined in `environments/dev/` to the `dev` namespace.
 
 ### 2. Prod Environment
-To deploy all production applications, apply the Prod Root Application to your cluster:
+To deploy all production applications, apply the Prod Root Application overlay to your cluster:
 
 ```bash
-kubectl apply -f bootstrap/prod-root.yaml
+kubectl apply -k bootstrap/prod
 ```
 
 ArgoCD will automatically create the prod `guestbook` application and sync the resources defined in `environments/prod/` to the `prod` namespace.
