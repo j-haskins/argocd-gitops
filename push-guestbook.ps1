@@ -3,7 +3,7 @@ param (
     [string]$AcrName,
 
     [Parameter(Mandatory=$false, HelpMessage="The source image to import")]
-    [string]$SourceImage = "gcr.io/heptio-images/ks-guestbook-demo:0.2",
+    [string]$SourceImage = "docker.io/nginx:alpine",
 
     [Parameter(Mandatory=$false, HelpMessage="The target repository and tag in your ACR")]
     [string]$TargetImage = "ks-guestbook-demo:0.2"
