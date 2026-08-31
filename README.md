@@ -109,7 +109,7 @@ The core module `aks-gitops` accepts the following variables:
 | `subnet_cidr` | The CIDR block for the AKS subnet | `10.240.0.0/16` |
 
 > [!NOTE]
-> The default Azure region is configured as `Central US` (central) to avoid regional vCPU quota limitations often encountered in `East US`.
+> The default Azure region is configured as `Central US` to avoid regional vCPU quota limitations often encountered in `East US`.
 
 Each cluster environment workspace applies custom default parameters:
 
@@ -149,18 +149,6 @@ Each environment exposes the following outputs:
    terraform apply
    ```
    *(See the [bootstrap README](file:///C:/Users/jhask/OneDrive/Documents/MyRepos/argocd-gitops/terraform/bootstrap/README.md) for instructions on importing existing storage resources into the state if they were already created via CLI).*
-3. **Initialize & Deploy (Dev)**:
-   ```bash
-   cd terraform/clusters/dev
-   terraform init
-   terraform apply
-   ```
-4. **Initialize & Deploy (Prod)**:
-   ```bash
-   cd terraform/clusters/prod
-   terraform init
-   terraform apply
-   ```
 
 > [!IMPORTANT]
 > **First-Time Deployment & Permissions**:
@@ -179,6 +167,18 @@ Each environment exposes the following outputs:
 > 
 > 2. **Role Assignment Permissions**: The identity running the Terraform pipeline to deploy `aks-gitops` (module) will require the ability to perform the action `Microsoft.Authorization/roleAssignments/write` to assign the `AcrPull` role to the AKS cluster's Kubelet identity.
 
+3. **Initialize & Deploy (Dev)**:
+   ```bash
+   cd terraform/clusters/dev
+   terraform init
+   terraform apply
+   ```
+4. **Initialize & Deploy (Prod)**:
+   ```bash
+   cd terraform/clusters/prod
+   terraform init
+   terraform apply
+   ```
 ### 5. Pushing Example Images to ACR
 
 After deploying the infrastructure, you must push the application container images to the newly created Azure Container Registry (ACR) before Argo CD can deploy them.
