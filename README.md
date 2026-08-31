@@ -179,7 +179,7 @@ Each environment exposes the following outputs:
    terraform init
    terraform apply
    ```
-### 5. Pushing Example Images to ACR
+5. Pushing the guestbook test app Image to the ACR
 
 After deploying the infrastructure, you must push the application container images to the newly created Azure Container Registry (ACR) before Argo CD can deploy them.
 
