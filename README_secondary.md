@@ -56,6 +56,35 @@ graph TD
 
 ---
 
+## Bootstrapping ArgoCD
+
+### 1. Dev Environment
+To deploy all development applications, apply the Dev Root Application overlay to your cluster:
+
+```bash
+kubectl apply -k bootstrap/dev
+```
+
+ArgoCD will automatically create the dev `guestbook` application and sync the resources defined in `environments/dev/` to the `dev` namespace.
+
+### 2. Prod Environment
+To deploy all production applications, apply the Prod Root Application overlay to your cluster:
+
+```bash
+kubectl apply -k bootstrap/prod
+```
+
+ArgoCD will automatically create the prod `guestbook` application and sync the resources defined in `environments/prod/` to the `prod` namespace.
+
+---
+
+## Working with Kustomize
+
+* **Base**: Common manifests (e.g. standard Deployment and Service definitions).
+* **Overlays (Dev/Prod)**: Specific patches for each environment. For example, the `prod` overlay scales replicas to `3` and updates resource limits, while the `dev` overlay uses `1` replica and custom labels.
+
+---
+
 ## Infrastructure Provisioning (Terraform)
 
 The infrastructure for the AKS clusters is defined using Terraform. It is organized into a bootstrap workspace, a reusable module, and cluster-specific directories to maintain separate state and configurations:
@@ -204,35 +233,6 @@ Once Terraform apply completes, configure your local environment and retrieve yo
 
 ---
 
-## Bootstrapping ArgoCD
-
-### 1. Dev Environment
-To deploy all development applications, apply the Dev Root Application overlay to your cluster:
-
-```bash
-kubectl apply -k bootstrap/dev
-```
-
-ArgoCD will automatically create the dev `guestbook` application and sync the resources defined in `environments/dev/` to the `dev` namespace.
-
-### 2. Prod Environment
-To deploy all production applications, apply the Prod Root Application overlay to your cluster:
-
-```bash
-kubectl apply -k bootstrap/prod
-```
-
-ArgoCD will automatically create the prod `guestbook` application and sync the resources defined in `environments/prod/` to the `prod` namespace.
-
----
-
-## Working with Kustomize
-
-* **Base**: Common manifests (e.g. standard Deployment and Service definitions).
-* **Overlays (Dev/Prod)**: Specific patches for each environment. For example, the `prod` overlay scales replicas to `3` and updates resource limits, while the `dev` overlay uses `1` replica and custom labels.
-
----
-
 ## Architectural Decisions
 
 ### Networking: Azure CNI vs. Kubenet
@@ -244,12 +244,3 @@ This deployment defaults to **Azure CNI** (Container Network Interface) for nati
 This deployment defaults to exposing the Argo CD API/UI server via a Kubernetes `LoadBalancer` service for simplicity.
 * **Current Choice (LoadBalancer Service)**: Argo CD is exposed directly with a public IP address allocated by Azure. This is useful for rapid prototyping and initial setup.
 * **Future Consideration (Secure Ingress with TLS)**: Exposing the control plane directly over a public `LoadBalancer` without SSL/TLS certificates or custom DNS names is insecure for production. Future considerations include switching `server.service.type` to `ClusterIP` and using an **Ingress Controller** (e.g., NGINX Ingress Controller) paired with **cert-manager** to automatically manage Let's Encrypt certificates and expose the service securely.
-
----
-
-## References
-
-* [Argo CD Documentation](https://argo-cd.readthedocs.io/)
-* [Kustomize Documentation](https://kustomize.io/)
-* [Terraform AzureRM Provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs)
-* [Azure Kubernetes Service (AKS) Documentation](https://learn.microsoft.com/en-us/azure/aks/)
