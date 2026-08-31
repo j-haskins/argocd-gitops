@@ -208,6 +208,16 @@ Each environment exposes the following outputs:
 > 
 > 2. **Role Assignment Permissions**: The identity running the Terraform pipeline to deploy `aks-gitops` (module) will require the ability to perform the action `Microsoft.Authorization/roleAssignments/write` to assign the `AcrPull` role to the AKS cluster's Kubelet identity.
 
+### 5. Pushing Example Images to ACR
+
+After deploying the infrastructure, you must push the application container images to the newly created Azure Container Registry (ACR) before Argo CD can deploy them.
+
+You can use the included `push-guestbook.ps1` helper script to automatically import the guestbook example image into your ACR without needing Docker installed locally:
+
+```powershell
+# Run the script with the name of your newly created ACR (check terraform outputs for the exact name)
+.\push-guestbook.ps1 -AcrName "<your-acr-name>"
+```
 
 ### Connection & ArgoCD Access
 
