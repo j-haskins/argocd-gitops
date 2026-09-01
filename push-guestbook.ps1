@@ -11,8 +11,11 @@ param (
 
 Write-Host "Importing $SourceImage into ACR '$AcrName' as '$TargetImage'..." -ForegroundColor Cyan
 
-# We use 'az acr import' which avoids needing to run docker pull/tag/push locally
-az acr import --name $AcrName --source $SourceImage --image $TargetImage
+# We use local docker commands because 'az acr import' often fails with 401 Unauthorized from Docker Hub due to rate limits
+az acr login --name $AcrName
+docker pull $SourceImage
+docker tag $SourceImage "$AcrName.azurecr.io/$TargetImage"
+docker push "$AcrName.azurecr.io/$TargetImage"
 
 if ($LASTEXITCODE -eq 0 -or $?) {
     Write-Host "Successfully imported image to ACR!" -ForegroundColor Green
